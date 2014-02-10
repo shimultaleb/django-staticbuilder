@@ -55,8 +55,8 @@ class Command(BaseCommand):
             with patched_settings(STATICBUILDER_COLLECT_BUILT=False):
                 # Patch the static files storage used by collectstatic
                 storage = BuiltFileStorage()
-                old_storage = djstorage.staticfiles_storage
-                djstorage.staticfiles_storage = storage
+                old_storage = settings.DEFAULT_FILE_STORAGE
+                settings.DEFAULT_FILE_STORAGE = storage
 
                 try:
                     call_command('collectstatic',
