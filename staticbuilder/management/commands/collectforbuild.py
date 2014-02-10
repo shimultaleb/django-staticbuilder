@@ -7,7 +7,7 @@ from django.core.management import call_command
 from django.utils.encoding import smart_str, smart_unicode
 from optparse import make_option
 import os
-from ...storage import BuiltFileStorage
+from ...storage import LazyBuiltFileStorage
 from ...utils import patched_settings, patched_finders
 
 
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         with patched_finders():
             with patched_settings(STATICBUILDER_COLLECT_BUILT=False):
                 # Patch the static files storage used by collectstatic
-                storage = BuiltFileStorage()
+                storage = LazyBuiltFileStorage()
                 old_storage = djstorage.staticfiles_storage
                 djstorage.staticfiles_storage = storage
                 try:

@@ -1,12 +1,11 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.core.files.storage import FileSystemStorage
+from django.utils.functional import LazyObject
 from django.conf import settings
 import os
 
 
 class BuiltFileStorage(FileSystemStorage):
-    _wrapped = None
-
     def __init__(self, location=None, base_url=None, *args, **kwargs):
         if location is None:
             location = settings.STATICBUILDER_BUILD_ROOT
@@ -38,3 +37,8 @@ class BuiltFileStorage(FileSystemStorage):
                 os.rmdir(name)
             else:
                 raise
+
+class LazyBuiltFileStorage(LazyObject):
+    def _setup(self):
+        self._wrapped = BuiltFileStorage()
+
